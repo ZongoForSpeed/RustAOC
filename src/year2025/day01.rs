@@ -1,5 +1,6 @@
 use regex::Regex;
 
+
 /**
 --- Day 1: Secret Entrance ---
 
@@ -72,55 +73,24 @@ L82
 
 Following these rotations would cause the dial to move as follows:
 
-  - The dial starts by pointing at 50.
-  - The dial is rotated L68 to point at 82.
-  - The dial is rotated L30 to point at 52.
-  - The dial is rotated R48 to point at 0.
-  - The dial is rotated L5 to point at 95.
-  - The dial is rotated R60 to point at 55.
-  - The dial is rotated L55 to point at 0.
-  - The dial is rotated L1 to point at 99.
-  - The dial is rotated L99 to point at 0.
-  - The dial is rotated R14 to point at 14.
-  - The dial is rotated L82 to point at 32.
+    The dial starts by pointing at 50.
+    The dial is rotated L68 to point at 82.
+    The dial is rotated L30 to point at 52.
+    The dial is rotated R48 to point at 0.
+    The dial is rotated L5 to point at 95.
+    The dial is rotated R60 to point at 55.
+    The dial is rotated L55 to point at 0.
+    The dial is rotated L1 to point at 99.
+    The dial is rotated L99 to point at 0.
+    The dial is rotated R14 to point at 14.
+    The dial is rotated L82 to point at 32.
 
 Because the dial points at 0 a total of three times during this process,
 the password in this example is 3.
 
 Analyze the rotations in your attached document. What's the actual password
 to open the door?
- */
-fn read_password<T>(lines: T) -> Option<i32>
-where
-    T: Iterator<Item = String>,
-{
-    let regex = Regex::new(r"([RL])(\d+)").unwrap();
 
-    let mut safe = 50;
-    let mut password = 0;
-
-    for line in lines {
-        //println!("line: {}", line);
-        let Some(caps) = regex.captures(line.as_str()) else {
-            println!("no match! for line {}", line);
-            return None;
-        };
-        let count = caps.get(2).unwrap().as_str().parse::<i32>().unwrap();
-        match caps.get(1).unwrap().as_str() {
-            "R" => safe += count,
-            "L" => safe -= count,
-            _ => println!("invalid line: {}", line),
-        }
-
-        //println!("safe: {}", safe);
-        if safe % 100 == 0 {
-            password += 1;
-        }
-    }
-    Some(password)
-}
-
-/**
 --- Part Two ---
 
 You're sure that's the right password, but the door won't open. You knock,
@@ -140,20 +110,17 @@ or at the end of one.
 Following the same rotations as in the above example, the dial points at
 zero a few extra times during its rotations:
 
-  - The dial starts by pointing at 50.
-  - The dial is rotated L68 to point at 82; during this rotation, it
-    points at 0 once.
-  - The dial is rotated L30 to point at 52.
-  - The dial is rotated R48 to point at 0.
-  - The dial is rotated L5 to point at 95.
-  - The dial is rotated R60 to point at 55; during this rotation, it
-    points at 0 once.
-  - The dial is rotated L55 to point at 0.
-  - The dial is rotated L1 to point at 99.
-  - The dial is rotated L99 to point at 0.
-  - The dial is rotated R14 to point at 14.
-  - The dial is rotated L82 to point at 32; during this rotation, it
-    points at 0 once.
+    The dial starts by pointing at 50.
+    The dial is rotated L68 to point at 82; during this rotation, it points at 0 once.
+    The dial is rotated L30 to point at 52.
+    The dial is rotated R48 to point at 0.
+    The dial is rotated L5 to point at 95.
+    The dial is rotated R60 to point at 55; during this rotation, it points at 0 once.
+    The dial is rotated L55 to point at 0.
+    The dial is rotated L1 to point at 99.
+    The dial is rotated L99 to point at 0.
+    The dial is rotated R14 to point at 14.
+    The dial is rotated L82 to point at 32; during this rotation, it points at 0 once.
 
 In this example, the dial points at 0 three times at the end of a rotation,
 plus three more times during a rotation. So, in this example, the new
@@ -164,55 +131,85 @@ would cause the dial to point at 0 ten times before returning back to 50!
 
 Using password method 0x434C49434B, what is the password to open the door?
 */
-fn read_password_0x434c49434b<T>(lines: T) -> Option<i32>
-where
-    T: Iterator<Item = String>,
-{
-    let regex = Regex::new(r"([RL])(\d+)").unwrap();
-
-    let mut safe = 50;
-    let mut password = 0;
-
-    for line in lines {
-        let Some(caps) = regex.captures(line.as_str()) else {
-            println!("no match! for line {}", line);
-            return None;
-        };
-
-        let mut count = caps.get(2).unwrap().as_str().parse::<i32>().unwrap();
-        match caps.get(1).unwrap().as_str() {
-            "R" => {
-                while count > 0 {
-                    safe += 1;
-                    if safe % 100 == 0 {
-                        password += 1;
-                    }
-                    count -= 1;
-                }
-            }
-            "L" => {
-                while count > 0 {
-                    safe -= 1;
-                    if safe % 100 == 0 {
-                        password += 1;
-                    }
-                    count -= 1;
-                }
-            }
-            _ => println!("invalid line: {}", line),
-        }
-
-        println!("line -> safe: {} {}", line, safe);
-        println!("password: {}", password);
-    }
-    Some(password)
-}
-
 #[cfg(test)]
 mod tests {
-    use crate::year2025::day01::{read_password, read_password_0x434c49434b};
     use crate::utils::files::read_lines;
     use std::path::Path;
+    use regex::Regex;
+
+    fn read_password<T>(lines: T) -> Option<i32>
+    where
+        T: Iterator<Item = String>,
+    {
+        let regex = Regex::new(r"([RL])(\d+)").unwrap();
+
+        let mut safe = 50;
+        let mut password = 0;
+
+        for line in lines {
+            //println!("line: {}", line);
+            let Some(caps) = regex.captures(line.as_str()) else {
+                println!("no match! for line {}", line);
+                return None;
+            };
+            let count = caps.get(2).unwrap().as_str().parse::<i32>().unwrap();
+            match caps.get(1).unwrap().as_str() {
+                "R" => safe += count,
+                "L" => safe -= count,
+                _ => println!("invalid line: {}", line),
+            }
+
+            //println!("safe: {}", safe);
+            if safe % 100 == 0 {
+                password += 1;
+            }
+        }
+        Some(password)
+    }
+
+    fn read_password_0x434c49434b<T>(lines: T) -> Option<i32>
+    where
+        T: Iterator<Item = String>,
+    {
+        let regex = Regex::new(r"([RL])(\d+)").unwrap();
+
+        let mut safe = 50;
+        let mut password = 0;
+
+        for line in lines {
+            let Some(caps) = regex.captures(line.as_str()) else {
+                println!("no match! for line {}", line);
+                return None;
+            };
+
+            let mut count = caps.get(2).unwrap().as_str().parse::<i32>().unwrap();
+            match caps.get(1).unwrap().as_str() {
+                "R" => {
+                    while count > 0 {
+                        safe += 1;
+                        if safe % 100 == 0 {
+                            password += 1;
+                        }
+                        count -= 1;
+                    }
+                }
+                "L" => {
+                    while count > 0 {
+                        safe -= 1;
+                        if safe % 100 == 0 {
+                            password += 1;
+                        }
+                        count -= 1;
+                    }
+                }
+                _ => println!("invalid line: {}", line),
+            }
+
+            println!("line -> safe: {} {}", line, safe);
+            println!("password: {}", password);
+        }
+        Some(password)
+    }
 
     #[test]
     fn input_example() {
