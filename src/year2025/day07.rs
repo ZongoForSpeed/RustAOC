@@ -285,20 +285,18 @@ mod tests {
                     }
                 }
             } else {
-                let mut new_beams = beams.clone();
                 for (i, c) in line.chars().enumerate() {
                     if c == '^' {
-                        match new_beams.remove(&i) {
+                        match beams.remove(&i) {
                             None => {}
                             Some(value) => {
                                 split += 1;
-                                new_beams.entry(i + 1).or_insert(0).add_assign(value);
-                                new_beams.entry(i - 1).or_insert(0).add_assign(value);
+                                beams.entry(i + 1).or_insert(0).add_assign(value);
+                                beams.entry(i - 1).or_insert(0).add_assign(value);
                             }
                         }
                     }
                 }
-                beams = new_beams;
                 println!("Beams: {:?}", beams);
             }
         }

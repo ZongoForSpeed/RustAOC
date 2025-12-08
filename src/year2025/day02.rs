@@ -103,7 +103,7 @@ mod tests {
         let mut invalid_ids = HashSet::new();
         for id in ids {
             //println!("x = ({}, {})", id.0, id.1);
-            for i in id.0..id.1 + 1 {
+            for i in id.0..=id.1 {
                 if func(i) {
                     invalid_ids.insert(i);
                     //println!("invalid = {}", i);
