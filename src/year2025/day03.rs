@@ -24,10 +24,10 @@ for just such an occasion. The batteries are each labeled with their
 joltage rating, a value from 1 to 9. You make a note of their joltage
 ratings (your puzzle input). For example:
 
-987654321111111
-811111111111119
-234234234234278
-818181911112111
+    987654321111111
+    811111111111119
+    234234234234278
+    818181911112111
 
 The batteries are arranged into banks; each line of digits in your input
 corresponds to a single bank of batteries. Within each bank, you need to
@@ -70,10 +70,10 @@ be 12 digits in each bank's joltage output instead of two.
 
 Consider again the example from before:
 
-987654321111111
-811111111111119
-234234234234278
-818181911112111
+    987654321111111
+    811111111111119
+    234234234234278
+    818181911112111
 
 Now, the joltages are much larger:
 

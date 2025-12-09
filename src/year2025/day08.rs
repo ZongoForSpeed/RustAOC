@@ -154,7 +154,7 @@ mod tests {
 
         let mut disjoint_set = DisjointSet::with_len(boxes.len());
         let mut count = 0;
-        for (p1, p2, d) in couples {
+        for (p1, p2, _d) in couples {
             // println!("({:?}, {:?}, {}", p1, p2, d);
             if disjoint_set.join(p1, p2) {
                 // println!("Joining {} and {}", p1, p2);

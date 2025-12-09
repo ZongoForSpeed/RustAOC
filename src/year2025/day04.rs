@@ -205,6 +205,7 @@ mod tests {
     use crate::utils::point::{Map, Point2D};
     use std::collections::HashSet;
     use std::path::Path;
+    use itertools::iproduct;
 
     #[test]
     fn input_example() {
@@ -266,21 +267,19 @@ mod tests {
 
     fn forklift(map: &Map) -> HashSet<Point2D> {
         let mut forklift = HashSet::new();
-        for y in 0..map.y_max() {
-            for x in 0..map.x_max() {
-                let p = Point2D::new(x, y);
-                if map.get(&p).unwrap() == '@' {
-                    let count = p
-                        .neighbors()
-                        .iter()
-                        .filter(|p| p.valid(map.x_max(), map.x_max()))
-                        .map(|p| map.get(p))
-                        .filter(|c| c.unwrap() == '@')
-                        .count();
+        for (x, y) in iproduct!(0..map.x_max(), 0..map.y_max()) {
+            let p = Point2D::new(x, y);
+            if map.get(&p).unwrap() == '@' {
+                let count = p
+                    .neighbors()
+                    .iter()
+                    .filter(|p| p.valid(map.x_max(), map.x_max()))
+                    .map(|p| map.get(p))
+                    .filter(|c| c.unwrap() == '@')
+                    .count();
 
-                    if count < 4 {
-                        forklift.insert(p);
-                    }
+                if count < 4 {
+                    forklift.insert(p);
                 }
             }
         }
