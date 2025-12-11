@@ -1,4 +1,3 @@
-
 /**
 --- Day 3: Lobby ---
 
@@ -118,7 +117,7 @@ mod tests {
     fn joltage_lobby<T>(lines: T, n: usize) -> u64
     where
         T: Iterator<Item = String>,
-     {
+    {
         let mut sum: u64 = 0;
 
         for line in lines {
@@ -131,7 +130,7 @@ mod tests {
 
     fn find_joltage(line: &String, n: usize) -> u64 {
         let mut removals_left = line.len() - n;
-        let mut stack:VecDeque<u8> = VecDeque::new();
+        let mut stack: VecDeque<u8> = VecDeque::new();
         for x in line.as_bytes() {
             let d = x - '0' as u8;
             while !stack.is_empty() && removals_left > 0 && stack.back().unwrap() < &d {
@@ -145,7 +144,7 @@ mod tests {
             stack.pop_back();
         }
 
-        let mut joltage:u64 = 0;
+        let mut joltage: u64 = 0;
         for d in stack {
             joltage *= 10;
             joltage += d as u64;

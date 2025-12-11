@@ -1,4 +1,3 @@
-
 /**
 --- Day 4: Printing Department ---
 
@@ -203,9 +202,9 @@ removed by the Elves and their forklifts?
 mod tests {
     use crate::utils::files::read_lines;
     use crate::utils::point::{Map, Point2D};
+    use itertools::iproduct;
     use std::collections::HashSet;
     use std::path::Path;
-    use itertools::iproduct;
 
     #[test]
     fn input_example() {

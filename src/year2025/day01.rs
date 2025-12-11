@@ -207,8 +207,8 @@ where
 #[cfg(test)]
 mod tests {
     use crate::utils::files::read_lines;
-    use std::path::Path;
     use crate::year2025::day01::{read_password, read_password_0x434c49434b};
+    use std::path::Path;
 
     #[test]
     fn input_example() {

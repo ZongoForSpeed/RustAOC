@@ -145,7 +145,6 @@ hhh: out"#;
 
         let result = part_two(lines.into_iter());
         assert_eq!(result, 2);
-
     }
 
     fn part_one<T>(lines: T) -> u64
@@ -167,15 +166,19 @@ hhh: out"#;
         let dac_to_fft = find_paths(&next_servers, "dac", "fft");
         let fft_to_dac = find_paths(&next_servers, "fft", "dac");
         if dac_to_fft > 0 {
-            find_paths(&next_servers,"svr", "dac") * dac_to_fft * find_paths(&next_servers,"fft", "out")
+            find_paths(&next_servers, "svr", "dac")
+                * dac_to_fft
+                * find_paths(&next_servers, "fft", "out")
         } else {
-            find_paths(&next_servers,"svr", "fft") * fft_to_dac * find_paths(&next_servers,"dac", "out")
+            find_paths(&next_servers, "svr", "fft")
+                * fft_to_dac
+                * find_paths(&next_servers, "dac", "out")
         }
     }
 
     fn read_input<T>(lines: T) -> HashMap<String, Vec<String>>
     where
-        T: Iterator<Item=String>
+        T: Iterator<Item = String>,
     {
         let mut next_servers: HashMap<String, Vec<String>> = HashMap::new();
         for line in lines {
@@ -198,7 +201,11 @@ hhh: out"#;
         visit(&mut cache, graph, &start.to_string())
     }
 
-    fn visit(cache: &mut HashMap<String, u64>, graph: &HashMap<String, Vec<String>>, server_name: &String) -> u64 {
+    fn visit(
+        cache: &mut HashMap<String, u64>,
+        graph: &HashMap<String, Vec<String>>,
+        server_name: &String,
+    ) -> u64 {
         match cache.get(server_name) {
             None => {}
             Some(value) => {
