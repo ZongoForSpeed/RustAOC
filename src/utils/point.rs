@@ -44,9 +44,9 @@ impl Rectangle {
     }
 
     pub(crate) fn overlaps_with(self, other: &Rectangle) -> bool {
-        self.x_max > other.x_min 
-            && other.x_max > self.x_min 
-            && self.y_max > other.y_min 
+        self.x_max > other.x_min
+            && other.x_max > self.x_min
+            && self.y_max > other.y_min
             && other.y_max > self.y_min
     }
 
@@ -104,6 +104,7 @@ impl Point3D {
     pub fn y(&self) -> i64 {
         self.y
     }
+
     pub fn z(&self) -> i64 {
         self.z
     }

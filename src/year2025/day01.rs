@@ -1,3 +1,4 @@
+use regex::Regex;
 
 /**
 --- Day 1: Secret Entrance ---
@@ -129,85 +130,85 @@ would cause the dial to point at 0 ten times before returning back to 50!
 
 Using password method 0x434C49434B, what is the password to open the door?
 */
+pub(crate) fn read_password<T>(lines: T) -> Option<i32>
+where
+    T: Iterator<Item = String>,
+{
+    let regex = Regex::new(r"([RL])(\d+)").unwrap();
+
+    let mut safe = 50;
+    let mut password = 0;
+
+    for line in lines {
+        //println!("line: {}", line);
+        let Some(caps) = regex.captures(line.as_str()) else {
+            println!("no match! for line {}", line);
+            return None;
+        };
+        let count = caps.get(2).unwrap().as_str().parse::<i32>().unwrap();
+        match caps.get(1).unwrap().as_str() {
+            "R" => safe += count,
+            "L" => safe -= count,
+            _ => println!("invalid line: {}", line),
+        }
+
+        //println!("safe: {}", safe);
+        if safe % 100 == 0 {
+            password += 1;
+        }
+    }
+    Some(password)
+}
+
+pub(crate) fn read_password_0x434c49434b<T>(lines: T) -> Option<i32>
+where
+    T: Iterator<Item = String>,
+{
+    let regex = Regex::new(r"([RL])(\d+)").unwrap();
+
+    let mut safe = 50;
+    let mut password = 0;
+
+    for line in lines {
+        let Some(caps) = regex.captures(line.as_str()) else {
+            println!("no match! for line {}", line);
+            return None;
+        };
+
+        let mut count = caps.get(2).unwrap().as_str().parse::<i32>().unwrap();
+        match caps.get(1).unwrap().as_str() {
+            "R" => {
+                while count > 0 {
+                    safe += 1;
+                    if safe % 100 == 0 {
+                        password += 1;
+                    }
+                    count -= 1;
+                }
+            }
+            "L" => {
+                while count > 0 {
+                    safe -= 1;
+                    if safe % 100 == 0 {
+                        password += 1;
+                    }
+                    count -= 1;
+                }
+            }
+            _ => println!("invalid line: {}", line),
+        }
+
+        println!("line -> safe: {} {}", line, safe);
+        println!("password: {}", password);
+    }
+    Some(password)
+}
+
 #[cfg(test)]
 mod tests {
     use crate::utils::files::read_lines;
     use std::path::Path;
-    use regex::Regex;
-
-    fn read_password<T>(lines: T) -> Option<i32>
-    where
-        T: Iterator<Item = String>,
-    {
-        let regex = Regex::new(r"([RL])(\d+)").unwrap();
-
-        let mut safe = 50;
-        let mut password = 0;
-
-        for line in lines {
-            //println!("line: {}", line);
-            let Some(caps) = regex.captures(line.as_str()) else {
-                println!("no match! for line {}", line);
-                return None;
-            };
-            let count = caps.get(2).unwrap().as_str().parse::<i32>().unwrap();
-            match caps.get(1).unwrap().as_str() {
-                "R" => safe += count,
-                "L" => safe -= count,
-                _ => println!("invalid line: {}", line),
-            }
-
-            //println!("safe: {}", safe);
-            if safe % 100 == 0 {
-                password += 1;
-            }
-        }
-        Some(password)
-    }
-
-    fn read_password_0x434c49434b<T>(lines: T) -> Option<i32>
-    where
-        T: Iterator<Item = String>,
-    {
-        let regex = Regex::new(r"([RL])(\d+)").unwrap();
-
-        let mut safe = 50;
-        let mut password = 0;
-
-        for line in lines {
-            let Some(caps) = regex.captures(line.as_str()) else {
-                println!("no match! for line {}", line);
-                return None;
-            };
-
-            let mut count = caps.get(2).unwrap().as_str().parse::<i32>().unwrap();
-            match caps.get(1).unwrap().as_str() {
-                "R" => {
-                    while count > 0 {
-                        safe += 1;
-                        if safe % 100 == 0 {
-                            password += 1;
-                        }
-                        count -= 1;
-                    }
-                }
-                "L" => {
-                    while count > 0 {
-                        safe -= 1;
-                        if safe % 100 == 0 {
-                            password += 1;
-                        }
-                        count -= 1;
-                    }
-                }
-                _ => println!("invalid line: {}", line),
-            }
-
-            println!("line -> safe: {} {}", line, safe);
-            println!("password: {}", password);
-        }
-        Some(password)
-    }
+    use crate::year2025::day01::{read_password, read_password_0x434c49434b};
 
     #[test]
     fn input_example() {
