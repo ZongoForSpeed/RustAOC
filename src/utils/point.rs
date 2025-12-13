@@ -90,6 +90,10 @@ impl Point2D {
     pub fn valid(&self, x_max: i64, y_max: i64) -> bool {
         self.x < x_max && self.y < y_max && self.x >= 0 && self.y >= 0
     }
+    
+    pub fn move_xy(&self, x: i64, y: i64) -> Point2D {
+        Point2D::new(self.x + x, self.y + y)
+    }
 }
 
 impl Point3D {
